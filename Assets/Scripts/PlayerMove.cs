@@ -1,10 +1,12 @@
-using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMove : MonoBehaviour
 {
-    private Rigidbody2D _rb;
     [SerializeField] private float speed;
+
+    private Rigidbody2D _rb;
+    private Vector2 _direction;
 
     private void Awake()
     {
@@ -13,7 +15,12 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rb.AddForce(Vector2.right * (speed * Input.GetAxis("Horizontal")), ForceMode2D.Impulse);
-        _rb.AddForce(Vector2.up * (speed * Input.GetAxis("Vertical")), ForceMode2D.Impulse);
+        Move();
+    }
+
+    private void Move()
+    {
+        _direction = Vector2.right * Input.GetAxis("Horizontal") + Vector2.up * Input.GetAxis("Vertical");
+        _rb.AddForce(_direction * speed, ForceMode2D.Impulse);
     }
 }
